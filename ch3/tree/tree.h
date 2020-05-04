@@ -9,7 +9,7 @@ class BinaryTree
 		BinaryTree();
 		~BinaryTree();
 		void insert(int);
-		bool remove(int);		
+		void remove(int);		
 		int findMin() const;
 		int findMax() const;
 		friend std::ostream &operator<<(std::ostream &, const BinaryTree &);

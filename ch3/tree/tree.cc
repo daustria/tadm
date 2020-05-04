@@ -90,9 +90,63 @@ void BinaryTree::insert(int n)
 }
 
 
-bool BinaryTree::remove(int n)
+void BinaryTree::remove(int n)
 {
-	return false;
+	//Assume the data exists in the tree
+	assert(root);
+	Node *current = root;
+	Node *previous = nullptr;
+	while(current)
+	{
+		if(n == current->data) {
+			break;
+		} else if(n < current->data) {
+			previous = current;
+			current = current->left;
+		} else { 
+			previous = current;
+			current = current->right;
+		}
+	}
+
+	//current points to the node to delete,
+	//previous points to the parent of current.
+	
+	//search for the candidate to replace the node which will be deleted
+	
+	Node *candidate = current;
+	Node *candidate_parent = previous;
+
+	if(current->left) {
+
+		candidate = current->left;
+		while(candidate->right)
+		{
+			candidate_parent = candidate;
+			candidate = candidate->right;
+		}
+
+		candidate_parent->right = candidate->left;
+		candidate->left = nullptr;
+		current->data = candidate->data;
+		delete candidate;
+	} else if(current->right) {
+
+		candidate = current->right;
+		while(candidate->left)
+		{
+			candidate_parent = candidate;
+			candidate = candidate->left;
+		}
+
+		candidate_parent->left = candidate->right;
+		candidate->right = nullptr;
+		current->data = candidate->data;
+		delete candidate;
+	} else {
+		Node *leaf = previous->left == current ? previous->left : previous->right;
+		delete leaf;
+	}
 }
 std::ostream &operator<<(std::ostream &out, const BinaryTree &bt)
 {
