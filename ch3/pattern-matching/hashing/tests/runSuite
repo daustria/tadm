@@ -1,0 +1,46 @@
+#!/bin/bash
+
+usage () {
+  echo "usage: $0 'suite-file' 'program'" >&2
+  exit 1
+}
+
+if [ ${#} -ne 2 ]; then
+  usage
+fi
+
+for filestem in $(cat $1); do
+
+  if [ ! -e $filestem.out ]; then
+    echo "$filestem.out does not exist" >&2
+    exit -1
+  elif [ -e $filestem.args -a -e $filestem.in ]; then
+    $2 $(cat $filestem.args) < $filestem.in > $filestem.actualOut
+  elif [ -e $filestem.args ]; then
+    $2 $(cat $filestem.args) > $filestem.actualOut
+  elif [ -e $filestem.in ]; then
+    $2 < $filestem.in > $filestem.actualOut
+  else
+    $2 > $filestem.actualOut
+  fi
+
+  diff $filestem.actualOut $filestem.out > /dev/null
+
+  if [ ${?} -ne 0 ]; then
+    echo "Test failed: $filestem"
+    echo "Args:"
+    if [ -e $filestem.args ]; then
+      echo "$(cat $filestem.args)"
+    fi
+    echo "Input:"
+    if [ -e $filestem.in ]; then
+      echo "$(cat $filestem.in)"
+    fi
+    echo "Expected:"
+    echo "$(cat $filestem.out)"
+    echo "Actual:"
+    echo "$(cat $filestem.actualOut)"
+ fi
+
+ rm $filestem.actualOut
+done

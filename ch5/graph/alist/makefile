@@ -1,7 +1,7 @@
 CXX = g++
-CXXFLAGS = -g -Wall -std=c++11 -MMD 
+CXXFLAGS = -g -Wall -std=c++11 -MMD # -D NDEBUG
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}
-OBJS = main.o tree.o
+OBJS = main.o alist.o
 DEPENDS = ${OBJS:.o=.d}
 EXEC = a.out
 

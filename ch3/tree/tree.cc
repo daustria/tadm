@@ -113,13 +113,23 @@ void BinaryTree::remove(int n)
 	//previous points to the parent of current.
 	
 	//search for the candidate to replace the node which will be deleted
-	
 	Node *candidate = current;
 	Node *candidate_parent = previous;
 
 	if(current->left) {
-
+		//TODO: write this function cleaner
 		candidate = current->left;
+		candidate_parent = current;
+
+		if(!candidate->right)
+		{
+			candidate_parent->left = candidate->left;
+			candidate->left = nullptr;
+			current->data = candidate->data;
+			delete candidate;
+			return;
+		}	
+
 		while(candidate->right)
 		{
 			candidate_parent = candidate;
@@ -131,8 +141,18 @@ void BinaryTree::remove(int n)
 		current->data = candidate->data;
 		delete candidate;
 	} else if(current->right) {
-
 		candidate = current->right;
+		candidate_parent = current;
+
+		if(!candidate->left)
+		{
+			candidate_parent->right = candidate->right;
+			candidate->right = nullptr;
+			current->data = candidate->data;
+			delete candidate;
+			return;
+		}	
+
 		while(candidate->left)
 		{
 			candidate_parent = candidate;
@@ -144,8 +164,17 @@ void BinaryTree::remove(int n)
 		current->data = candidate->data;
 		delete candidate;
 	} else {
-		Node *leaf = previous->left == current ? previous->left : previous->right;
-		delete leaf;
+		if(previous && previous->left == current) {
+			previous->left = nullptr;
+			delete current;
+		} else if(previous && previous->right == current) {
+			previous->right = nullptr;
+			delete current;
+		} else {
+			delete root;
+			root = nullptr;
+		}
+		
 	}
 }
 std::ostream &operator<<(std::ostream &out, const BinaryTree &bt)

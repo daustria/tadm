@@ -1,0 +1,7 @@
+# Fdb version 3
+["pdflatex"] 1598112024 "test.tex" "test.pdf" "test" 1598112024
+  "test.aux" 1598110866 8 a94a2480d3289e625eea47cd1b285758 ""
+  "test.tex" 1598112021 61 4922193ecc26b3f07a8d0d02bf885e25 ""
+  (generated)
+  "test.log"
+  "test.pdf"
